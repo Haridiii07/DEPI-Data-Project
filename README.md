@@ -22,20 +22,21 @@ It provides a fully preprocessed, large-scale dataset of **1 million students** 
 
 ## Folder Structure
 
-```
+```text
 Data Project/
 ├── data/
 │   └── milestone1_real/
-│       ├── cleaned_students.csv                # Full cleaned dataset (downloaded via Drive)
-│       ├── students_batch_01_100K_cleaned.csv
-│       ├── ... (up to students_batch_10_100K_cleaned.csv)
-│       ├── sample_100K_students.csv            # Random sample (10K per batch, 100K students total) [not pushed]
-│       └── summary_1M_real_data.csv
+│       ├── students_batch_01_100K_cleaned.zip  # Cleaned batches (ZIP, each contains one CSV)
+│       ├── ... (up to students_batch_10_100K_cleaned.zip)
+│       ├── sample_100K_students.zip            # Sample dataset (ZIP)
+│       ├── summary_1M_real_data.csv            # Summary stats
+│       └── cleaned_students.csv                # Assembled full CSV (generated locally)
 ├── scripts/
 │   ├── real_data_milestone1.py
 │   ├── clean_students_batches.py
 │   ├── create_sample_dataset.py                # Creates 100K-student sample from batches
-│   └── verify_sample.py                        # Verifies sample dataset stats
+│   ├── verify_sample.py                        # Verifies sample dataset stats
+│   └── assemble_dataset.py                     # Assembles ZIP batches → single CSV
 ├── requirements.txt
 ├── .gitignore
 └── README.md
@@ -46,9 +47,9 @@ Data Project/
 ## Contents
 
 - **data/milestone1_real/**:  
-  - `cleaned_students.csv` – Full cleaned dataset (concatenated from cleaned batches)
-  - `students_batch_XX_100K_cleaned.csv` – 10 device-friendly cleaned batch files
-  - `sample_100K_students.csv` – Random sample of 100K students (10K per batch)
+  - `students_batch_XX_100K_cleaned.zip` – Ten cleaned batch archives (each contains a CSV)
+  - `cleaned_students.csv` – Full assembled dataset (generated locally from ZIP parts)
+  - `sample_100K_students.zip` – Random sample of 100K students (ZIP)
   - `summary_1M_real_data.csv` – Data summary and statistics
 
 - **scripts/real_data_milestone1.py**:  
@@ -58,10 +59,13 @@ Data Project/
   - Script to clean each 100K batch, standardize fields, and produce `cleaned_students.csv`
 
 - **scripts/create_sample_dataset.py**:  
-  - Script to create `sample_100K_students.csv` by sampling 10K students from each batch
+  - Script to create a 100K-student sample by sampling from batches
 
 - **scripts/verify_sample.py**:  
   - Script to verify row counts, distributions, and basic stats on the sample
+
+- **scripts/assemble_dataset.py**:  
+  - Script to assemble all `students_batch_XX_100K_cleaned.zip` parts into `cleaned_students.csv` (and optional sample)
 
 - **requirements.txt**:  
   - Minimal dependencies for Milestone 1
@@ -74,26 +78,43 @@ Data Project/
 ## How to Use
 
 1. **Install requirements**  
-   ```
+   
+   ```bash
    pip install -r requirements.txt
    ```
 
-2. **(Optional) Regenerate the raw dataset**  
+2. **Assemble the full dataset from ZIP parts (recommended)**  
+   
+   ```bash
+   python scripts/assemble_dataset.py
    ```
+   - Discovers `students_batch_01..10_100K_cleaned.zip`
+   - Concatenates underlying cleaned CSVs in order
+   - Writes `data/milestone1_real/cleaned_students.csv`
+   - Optional sample creation:
+     
+     ```bash
+     python scripts/assemble_dataset.py --create-sample --rows-per-batch 10000
+     ```
+
+3. **(Optional) Regenerate the raw dataset**  
+   
+   ```bash
    python scripts/real_data_milestone1.py
    ```
    > *Generates 10×100K batch CSVs and a combined CSV from IPEDS inputs.*
 
-3. **Clean the dataset in batches (recommended for 1M data)**  
-   ```
+4. **Clean the dataset in batches (if regenerating)**  
+   
+   ```bash
    python scripts/clean_students_batches.py
    ```
    - Processes batches 1–10 individually to limit memory usage
-   - Writes `students_batch_XX_100K_cleaned.csv`
-   - Concatenates them into `cleaned_students.csv`
+   - Writes `students_batch_XX_100K_cleaned.csv` then ZIPs
+   - Concatenates them into `cleaned_students.csv` (or assemble later from ZIPs)
    - Removes the old combined raw file if present
 
-4. **Explore the data**  
+5. **Explore the data**  
    - Use the cleaned batch files for analysis, or `cleaned_students.csv` for full-scale processing.
    - See `summary_1M_real_data.csv` for quick stats.
 
@@ -101,14 +122,16 @@ Data Project/
 
 ## Dataset Access (Google Drive)
 
-The full dataset (~3 GB) is hosted on Google Drive due to size constraints. Download it locally using `gdown`:
+If needed, the full dataset can be hosted externally (e.g., Google Drive). Preferred workflow is to assemble locally from the provided ZIP parts. To adapt a Drive download:
 
 1. Install tools (if not already installed):
-   ```
+   
+   ```bash
    pip install gdown pandas
    ```
 
 2. Download the full dataset:
+   
    ```python
    import gdown, os
 
@@ -121,6 +144,7 @@ The full dataset (~3 GB) is hosted on Google Drive due to size constraints. Down
    ```
 
 3. Quick verification:
+   
    ```python
    import pandas as pd, os
    f = "data/milestone1_real/cleaned_students.csv"
@@ -182,11 +206,12 @@ Compress-Archive -Path data/milestone1_real/sample_100K_students.csv -Destinatio
 ## Validation (Quick Checks)
 
 - Row counts by file (PowerShell):
-  ```
+```powershell
   Get-ChildItem "data/milestone1_real/*_cleaned.csv" | ForEach-Object { "$( $_.Name ): $( (Get-Content $_.FullName | Measure-Object -Line).Lines )" }
   ```
 
 - Python sanity checks:
+  
   ```python
   import pandas as pd
   df = pd.read_csv('data/milestone1_real/cleaned_students.csv')
@@ -198,6 +223,7 @@ Compress-Archive -Path data/milestone1_real/sample_100K_students.csv -Destinatio
   ```
 
 - Spot-check columns are present and ordered:
+  
   ```python
   expected = [
       'student_id','student_name','university','state','university_type','subject','score','grade','attendance_flag','performance_category','year','semester','date','credits','course_level','batch_number'
@@ -247,6 +273,7 @@ Compress-Archive -Path data/milestone1_real/sample_100K_students.csv -Destinatio
 
 ---
 
+ 
 ### **Milestone 3: Visualization & Reporting**
 - **Goal**: Use Python to visualize student performance over time.
 - **Tasks**:
@@ -260,6 +287,7 @@ Compress-Archive -Path data/milestone1_real/sample_100K_students.csv -Destinatio
 
 ---
 
+ 
 ### **Milestone 4: Final Documentation and Presentation**
 - **Goal**: Summarize findings and show visual outputs.
 - **Tasks**:
@@ -274,6 +302,7 @@ Compress-Archive -Path data/milestone1_real/sample_100K_students.csv -Destinatio
 
 ---
 
+ 
 ## License
 
 This project is for educational and research purposes.  
