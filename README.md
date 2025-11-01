@@ -284,42 +284,6 @@ df = pd.read_parquet('cleaned_students.parquet', columns=['score'])  # ~2 second
 
 ---
 
-## Dataset Access (Google Drive)
-
-If needed, the full dataset can be hosted externally (e.g., Google Drive). Preferred workflow is to assemble locally from the provided ZIP parts. To adapt a Drive download:
-
-1. Install tools (if not already installed):
-   
-   ```bash
-   pip install gdown pandas
-   ```
-
-2. Download the full dataset:
-   
-   ```python
-   import gdown, os
-
-   os.makedirs("data/milestone1_real", exist_ok=True)
-   file_id = "YOUR_FILE_ID"  # Replace with the actual Google Drive file ID
-   url = f"https://drive.google.com/uc?id={file_id}"
-   output = "data/milestone1_real/cleaned_students.csv"
-   gdown.download(url, output, quiet=False)
-   print("Dataset downloaded to:", output)
-   ```
-
-3. Quick verification:
-   
-   ```python
-   import pandas as pd, os
-   f = "data/milestone1_real/cleaned_students.csv"
-   print("Exists:", os.path.exists(f), "Size (GB):", os.path.getsize(f)/(1024**3))
-   print(pd.read_csv(f, nrows=5))
-   ```
-
-> Note: Do not commit the full dataset to Git. Use the sample file for the repo.
-
----
-
 ## Sample Dataset (100K Students)
 
 For development and testing, use the curated sample included (small enough to commit):
