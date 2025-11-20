@@ -1,0 +1,40 @@
+[flake8]
+# Maximum line length
+max-line-length = 127
+
+# Maximum complexity
+max-complexity = 10
+
+# Exclude patterns
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    env,
+    .eggs,
+    *.egg,
+    build,
+    dist,
+    .ipynb_checkpoints,
+    *.pyc,
+    data/,
+    output/,
+    .github/
+
+# Ignore specific error codes
+# E203: whitespace before ':' (conflicts with black)
+# E501: line too long (handled by max-line-length)
+# W503: line break before binary operator (conflicts with black)
+ignore = E203, E501, W503
+
+# Per-file ignores
+per-file-ignores =
+    __init__.py:F401
+
+# Show source
+show-source = True
+
+# Statistics
+statistics = True
+

@@ -207,6 +207,10 @@ jupyter notebook "scripts/DEPI_SQL Integration & Querying-Copy1.ipynb"
 
 **Prerequisites:**
 - Ensure `data/milestone1_real/cleaned_students.parquet` exists (run `python scripts/assemble_dataset.py` if needed)
+- **Build the database locally**: The database file is not included in the repo to keep it lightweight. Run the build script:
+  ```bash
+  python scripts/build_database.py
+  ```
 - All dependencies installed: `pip install -r requirements.txt`
 
 **What you'll get:**

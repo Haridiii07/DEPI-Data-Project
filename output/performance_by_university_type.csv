@@ -1,0 +1,37 @@
+university_type,state,avg_score,avg_attendance,record_count,unique_students
+Private,Tennessee,84.15,0.89,199928,20000
+Private,Massachusetts,84.14,0.89,400302,40000
+Public,Georgia,84.13,0.89,199750,20000
+Public,Ohio,84.13,0.89,200109,20000
+Private,North Carolina,84.12,0.89,199800,20000
+Public,Minnesota,84.12,0.89,199853,20000
+Public,Wisconsin,84.11,0.89,199900,20000
+Private,Illinois,84.11,0.89,400095,40000
+Private,Missouri,84.11,0.89,199795,20000
+Public,California,84.11,0.89,1199714,120000
+Public,Indiana,84.1,0.89,400175,40000
+Ivy League,New York,84.1,0.89,399783,40000
+Public,New Jersey,84.1,0.89,200309,20000
+Public,Illinois,84.1,0.89,199755,20000
+Private,Georgia,84.1,0.89,200228,20000
+Ivy League,Massachusetts,84.1,0.89,199936,20000
+Private,Pennsylvania,84.09,0.89,200073,20000
+Public,Pennsylvania,84.09,0.89,200084,20000
+Public,Maryland,84.09,0.89,199840,20000
+Ivy League,Connecticut,84.09,0.89,199889,20000
+Ivy League,New Jersey,84.09,0.89,200096,20000
+Public,Michigan,84.09,0.89,400168,40000
+Public,Virginia,84.09,0.89,200204,20000
+Ivy League,New Hampshire,84.09,0.89,200092,20000
+Private,District of Columbia,84.08,0.89,199693,20000
+Private,Indiana,84.08,0.89,200009,20000
+Private,California,84.08,0.89,599736,60000
+Public,Texas,84.08,0.89,400257,40000
+Public,Florida,84.08,0.89,199911,20000
+Ivy League,Pennsylvania,84.08,0.89,200144,20000
+Public,North Carolina,84.07,0.89,199960,20000
+Private,Texas,84.07,0.89,200345,20000
+Public,Washington,84.05,0.89,199951,20000
+Private,New York,84.05,0.89,400158,40000
+Private,Maryland,84.04,0.89,199980,20000
+Ivy League,Rhode Island,84.03,0.89,199773,20000

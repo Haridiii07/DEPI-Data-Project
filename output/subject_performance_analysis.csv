@@ -1,0 +1,32 @@
+subject,avg_score,avg_attendance,record_count,min_score,max_score
+Communications,84.48,0.9,322344,33,100
+Business Administration,84.47,0.9,322100,28,100
+Architecture,84.47,0.9,322953,31,100
+Biochemistry,84.47,0.9,322630,27,100
+Biology,84.46,0.9,322816,28,100
+Foreign Language,84.46,0.9,321457,29,100
+Psychology,84.46,0.9,323107,23,100
+Sociology,84.46,0.9,322380,31,100
+Law (Pre-law),84.46,0.9,321844,29,100
+Political Science,84.45,0.9,322143,27,100
+Astronomy,84.45,0.9,323273,34,100
+Statistics,84.45,0.9,322721,34,100
+Computer Science,84.45,0.9,322253,32,100
+Economics,84.45,0.9,321980,33,100
+English Literature,84.45,0.9,322888,33,100
+Geology,84.45,0.9,321371,34,100
+Journalism,84.45,0.9,322478,31,100
+Philosophy,84.45,0.9,322820,34,100
+Nursing,84.45,0.9,323151,35,100
+Environmental Science,84.45,0.9,322880,32,100
+Music,84.44,0.9,322507,36,100
+Education,84.44,0.9,322193,32,100
+Theater,84.43,0.9,323323,26,100
+Public Health,84.43,0.9,322852,26,100
+History,84.42,0.9,322573,31,100
+Medicine (Pre-med),84.42,0.9,322724,28,100
+Art History,84.42,0.9,322218,30,100
+Engineering,81.72,0.82,322915,27,100
+Mathematics,81.7,0.82,323088,30,100
+Chemistry,81.69,0.82,322944,25,100
+Physics,81.65,0.82,322869,25,100

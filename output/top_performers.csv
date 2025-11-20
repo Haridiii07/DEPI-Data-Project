@@ -1,0 +1,101 @@
+student_name,subject,score,grade,attendance_flag,university_name,university_type,full_date
+Student_00034,Mathematics,100,A+,true,Princeton University,Ivy League,2020-11-07
+Student_00022,Psychology,100,A+,true,Princeton University,Ivy League,2015-07-08
+Student_00047,Mathematics,100,A+,true,Princeton University,Ivy League,2016-01-24
+Student_00036,Medicine (Pre-med),100,A+,true,Princeton University,Ivy League,2018-11-19
+Student_00048,Business Administration,100,A+,true,Princeton University,Ivy League,2013-08-24
+Student_00023,Environmental Science,100,A+,true,Princeton University,Ivy League,2012-04-25
+Student_00080,Astronomy,100,A+,true,Princeton University,Ivy League,2013-06-17
+Student_00037,Communications,100,A+,true,Princeton University,Ivy League,2010-06-23
+Student_00065,Education,100,A+,true,Princeton University,Ivy League,2011-01-22
+Student_00031,Astronomy,100,A+,true,Princeton University,Ivy League,2018-06-14
+Student_00080,Political Science,100,A+,true,Princeton University,Ivy League,2016-03-08
+Student_00080,Public Health,100,A+,true,Princeton University,Ivy League,2012-01-11
+Student_00057,Sociology,100,A+,true,Princeton University,Ivy League,2019-03-13
+Student_00085,Statistics,100,A+,true,Princeton University,Ivy League,2018-04-11
+Student_00086,Economics,100,A+,true,Princeton University,Ivy League,2013-07-03
+Student_00023,Chemistry,100,A+,true,Princeton University,Ivy League,2020-03-20
+Student_00037,Biochemistry,100,A+,true,Princeton University,Ivy League,2015-09-01
+Student_00012,Education,100,A+,true,Princeton University,Ivy League,2016-10-10
+Student_00099,Geology,100,A+,true,Princeton University,Ivy League,2019-04-05
+Student_00011,Environmental Science,100,A+,true,Princeton University,Ivy League,2018-05-21
+Student_00062,Public Health,100,A+,true,Princeton University,Ivy League,2010-05-04
+Student_00031,Computer Science,100,A+,true,Princeton University,Ivy League,2017-11-03
+Student_00084,Business Administration,100,A+,true,Princeton University,Ivy League,2023-02-11
+Student_00040,Communications,100,A+,true,Princeton University,Ivy League,2012-05-19
+Student_00086,Foreign Language,100,A+,true,Princeton University,Ivy League,2021-05-11
+Student_00006,Law (Pre-law),100,A+,true,Princeton University,Ivy League,2012-06-27
+Student_00090,Economics,100,A+,true,Princeton University,Ivy League,2019-10-28
+Student_00020,Music,100,A+,true,Princeton University,Ivy League,2014-05-16
+Student_00085,Journalism,100,A+,true,Princeton University,Ivy League,2024-06-12
+Student_00057,Philosophy,100,A+,true,Princeton University,Ivy League,2017-05-19
+Student_00102,Communications,100,A+,true,Princeton University,Ivy League,2013-10-22
+Student_00037,Education,100,A+,true,Princeton University,Ivy League,2010-04-09
+Student_00052,Biology,100,A+,true,Princeton University,Ivy League,2012-01-09
+Student_00072,Statistics,100,A+,true,Princeton University,Ivy League,2022-07-07
+Student_00100,Law (Pre-law),100,A+,true,Princeton University,Ivy League,2010-09-15
+Student_00050,Communications,100,A+,true,Princeton University,Ivy League,2021-03-21
+Student_00024,Environmental Science,100,A+,true,Princeton University,Ivy League,2020-08-23
+Student_00022,Engineering,100,A+,true,Princeton University,Ivy League,2023-10-08
+Student_00100,Computer Science,100,A+,true,Princeton University,Ivy League,2022-02-06
+Student_00018,Computer Science,100,A+,true,Princeton University,Ivy League,2024-02-16
+Student_00059,Communications,100,A+,true,Princeton University,Ivy League,2022-03-25
+Student_00070,Education,100,A+,true,Princeton University,Ivy League,2020-08-25
+Student_00096,Theater,100,A+,true,Princeton University,Ivy League,2022-11-24
+Student_00033,Political Science,100,A+,true,Princeton University,Ivy League,2024-11-09
+Student_00076,Statistics,100,A+,true,Princeton University,Ivy League,2022-12-06
+Student_00012,Statistics,100,A+,true,Princeton University,Ivy League,2016-03-24
+Student_00100,Political Science,100,A+,true,Princeton University,Ivy League,2023-09-11
+Student_00016,Art History,100,A+,true,Princeton University,Ivy League,2011-06-26
+Student_00039,Economics,100,A+,true,Princeton University,Ivy League,2014-09-09
+Student_00093,Law (Pre-law),100,A+,true,Princeton University,Ivy League,2015-02-09
+Student_00090,Theater,100,A+,true,Princeton University,Ivy League,2010-12-05
+Student_00025,Statistics,100,A+,true,Princeton University,Ivy League,2021-04-05
+Student_00042,Sociology,100,A+,true,Princeton University,Ivy League,2021-05-12
+Student_00048,Architecture,100,A+,true,Princeton University,Ivy League,2021-09-03
+Student_00101,Architecture,100,A+,true,Princeton University,Ivy League,2014-09-24
+Student_00020,History,100,A+,true,Princeton University,Ivy League,2021-04-05
+Student_00067,Foreign Language,100,A+,true,Princeton University,Ivy League,2017-05-23
+Student_00029,Philosophy,100,A+,true,Princeton University,Ivy League,2016-10-10
+Student_00086,Business Administration,100,A+,true,Princeton University,Ivy League,2011-07-18
+Student_00039,Business Administration,100,A+,true,Princeton University,Ivy League,2015-06-07
+Student_00078,Foreign Language,100,A+,true,Princeton University,Ivy League,2023-07-02
+Student_00027,Computer Science,100,A+,true,Princeton University,Ivy League,2020-05-14
+Student_00107,Nursing,100,A+,true,Princeton University,Ivy League,2010-05-08
+Student_00001,Foreign Language,100,A+,true,Princeton University,Ivy League,2012-11-21
+Student_00045,Law (Pre-law),100,A+,true,Princeton University,Ivy League,2014-11-13
+Student_00007,Foreign Language,100,A+,true,Princeton University,Ivy League,2015-03-04
+Student_00103,History,100,A+,true,Princeton University,Ivy League,2020-08-20
+Student_00044,Physics,100,A+,true,Princeton University,Ivy League,2022-09-12
+Student_00075,Biochemistry,100,A+,true,Princeton University,Ivy League,2024-05-15
+Student_00012,Sociology,100,A+,true,Princeton University,Ivy League,2014-12-09
+Student_00104,Art History,100,A+,true,Princeton University,Ivy League,2020-12-27
+Student_00026,Public Health,100,A+,true,Princeton University,Ivy League,2020-04-14
+Student_00051,Architecture,100,A+,true,Princeton University,Ivy League,2011-10-17
+Student_00008,Biology,100,A+,true,Princeton University,Ivy League,2014-09-05
+Student_00052,Environmental Science,100,A+,true,Princeton University,Ivy League,2015-10-04
+Student_00064,Art History,100,A+,true,Princeton University,Ivy League,2013-01-08
+Student_00075,Philosophy,100,A+,true,Princeton University,Ivy League,2016-03-16
+Student_00012,Environmental Science,100,A+,true,Princeton University,Ivy League,2024-05-13
+Student_00104,Engineering,100,A+,true,Princeton University,Ivy League,2022-02-20
+Student_00050,Business Administration,100,A+,true,Princeton University,Ivy League,2016-02-05
+Student_00058,Mathematics,100,A+,true,Princeton University,Ivy League,2019-03-01
+Student_00047,Geology,100,A+,true,Princeton University,Ivy League,2012-07-16
+Student_00079,Statistics,100,A+,true,Princeton University,Ivy League,2015-03-15
+Student_00009,History,100,A+,true,Princeton University,Ivy League,2015-08-10
+Student_00095,Astronomy,100,A+,true,Princeton University,Ivy League,2015-04-10
+Student_00015,Public Health,100,A+,true,Princeton University,Ivy League,2023-07-24
+Student_00098,Education,100,A+,true,Princeton University,Ivy League,2014-01-06
+Student_00050,Nursing,100,A+,true,Princeton University,Ivy League,2020-01-24
+Student_00062,Biology,100,A+,true,Princeton University,Ivy League,2015-07-02
+Student_00052,Law (Pre-law),100,A+,true,Princeton University,Ivy League,2016-01-09
+Student_00084,Political Science,100,A+,true,Princeton University,Ivy League,2019-07-18
+Student_00066,Engineering,100,A+,true,Princeton University,Ivy League,2019-05-20
+Student_00067,Public Health,100,A+,true,Princeton University,Ivy League,2012-09-28
+Student_00035,Public Health,100,A+,true,Princeton University,Ivy League,2011-06-03
+Student_00106,English Literature,100,A+,true,Princeton University,Ivy League,2020-08-19
+Student_00001,Sociology,100,A+,true,Princeton University,Ivy League,2023-09-01
+Student_00032,Architecture,100,A+,true,Princeton University,Ivy League,2018-03-13
+Student_00005,Sociology,100,A+,true,Princeton University,Ivy League,2016-07-03
+Student_00088,Political Science,100,A+,true,Princeton University,Ivy League,2017-02-05
+Student_00107,Economics,100,A+,true,Princeton University,Ivy League,2021-07-06
