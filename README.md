@@ -2,8 +2,8 @@
 
 ## Overview
 
-This repository contains **Milestone 1** and **Milestone 2** deliverables for the Student Performance Dashboard project.  
-It provides a fully preprocessed, large-scale dataset of **1 million students** from the **top 50 U.S. universities** (2010–2024), with advanced SQL analytics and star schema database implementation using DuckDB for optimal performance.
+This repository contains **Milestone 1, 2, and 3** deliverables for the Student Performance Dashboard project.  
+It provides a fully preprocessed, large-scale dataset of **1 million students** from the **top 50 U.S. universities** (2010–2024), with advanced SQL analytics, star schema database implementation using DuckDB, and an interactive Streamlit dashboard for optimal performance and visualization.
 
 ## Table of Contents
 
@@ -43,19 +43,21 @@ Data Project/
 │   ├── assemble_dataset.py                    # Assembles Parquet batches → single Parquet
 │   ├── convert_to_parquet.py                  # Converts CSV files to Parquet format
 │   ├── generate_summary.py                    # Generates summary statistics
-│   ├── DEPI_SQL Integration & Querying-Copy1.ipynb  # Milestone 2: SQL Analytics (Complete)
+│   ├── Milestone2_3_SQL_and_Visualizations.ipynb   # Milestones 2 & 3: SQL + Visualizations
 │   └── student_performance.duckdb              # DuckDB database file
 ├── output/
 │   └── subject_performance.csv                # Generated analytical outputs
 ├── docs/                                       # Documentation and proposals
 │   ├── Proposal_ Student Performance Dashboard.md
+│   ├── data_dictionary.md                      # Data dictionary (16 columns)
 │   └── *.pdf                                   # Additional documentation PDFs
 ├── assets/                                     # Visual assets and diagrams
 │   ├── ERD (Entity Relationship Diagram) based on the database design.png
 │   ├── TimelineGantt chart for the project plan.png
 │   └── wireframes for the UIUX design.png
 ├── dashboard/                                  # Dashboard UI components
-│   └── edu-analytics-dashboard.tsx             # React dashboard component
+│   ├── app.py                                 # Streamlit dashboard (M3)
+│   └── edu-analytics-dashboard.tsx             # React prototype (unused)
 ├── requirements.txt                            # Python dependencies
 ├── .gitignore                                  # Git ignore rules
 └── README.md                                   # This file
@@ -92,13 +94,13 @@ Data Project/
 - **scripts/convert_to_parquet.py**:  
   - **NEW!** Converts all CSV files to Parquet format while preserving originals
 
-- **scripts/DEPI_SQL Integration & Querying-Copy1.ipynb**:  
-  - **MILESTONE 2 (COMPLETE)** SQL analytics notebook with DuckDB implementation
+- **scripts/Milestone2_3_SQL_and_Visualizations.ipynb**:  
+  - **MILESTONES 2 & 3 (COMPLETE)** Combined SQL analytics and visualization notebook
   - Star schema design and ETL pipeline
   - Advanced analytical queries and visualizations
   - ER diagram creation and performance analysis
   - Complete ETL pipeline processing 10M+ records
-  - Four comprehensive visualizations
+  - Four comprehensive visualizations (matplotlib, seaborn)
   - CSV export functionality
 
 - **output/**:  
@@ -111,6 +113,7 @@ Data Project/
 
 - **docs/**:  
   - Project proposal and documentation
+  - **data_dictionary.md**: Complete data dictionary with all 16 columns, data types, and valid ranges
   - Additional project-related PDFs and markdown files
 
 - **assets/**:  
@@ -119,8 +122,8 @@ Data Project/
   - UI/UX wireframes and design mockups
 
 - **dashboard/**:  
-  - Dashboard UI components and frontend code
-  - React/TypeScript dashboard implementation
+  - **app.py**: Working Streamlit dashboard with interactive visualizations
+  - edu-analytics-dashboard.tsx: React/TypeScript prototype (not currently used)
 
 - **requirements.txt**:  
   - Dependencies for Milestones 1 & 2 (includes pyarrow, duckdb, matplotlib, seaborn)
@@ -147,7 +150,7 @@ Data Project/
    - Preserves original CSV files
    - Creates `.parquet` versions alongside existing files
 
-3. **Assemble the full dataset from Parquet files (recommended)**  
+3. **Assemble the full dataset from Parquet files**  
    
    ```bash
    python scripts/assemble_dataset.py
@@ -161,34 +164,55 @@ Data Project/
      python scripts/assemble_dataset.py --create-sample --rows-per-batch 10000
      ```
 
-4. **Alternative: Assemble from ZIP parts (legacy method)**  
+4. **Build the DuckDB database**  
    
    ```bash
-   # Original CSV functionality is preserved in comments within assemble_dataset.py
-   # Uncomment the CSV functions if you need to work with ZIP files
+   python scripts/build_database.py
    ```
+   - Creates star schema database (820MB)
+   - Builds 5 tables: 4 dimensions + 1 fact table
+   - Processes 10M+ records in seconds
+   - Generates `scripts/student_performance.duckdb`
 
-5. **(Optional) Regenerate the raw dataset**  
+5. **Launch the interactive dashboard**  
    
    ```bash
-   python scripts/real_data_milestone1.py
+   python -m streamlit run dashboard/app.py
    ```
-   > *Generates 10×100K batch CSVs and a combined CSV from IPEDS inputs.*
+   - Opens at http://localhost:8501
+   - Real-time querying from DuckDB
+   - Interactive filters and visualizations
 
-6. **Clean the dataset in batches (if regenerating)**  
-   
-   ```bash
-   python scripts/clean_students_batches.py
-   ```
-   - Processes batches 1–10 individually to limit memory usage
-   - Writes `students_batch_XX_100K_cleaned.csv` then ZIPs
-   - Concatenates them into `cleaned_students.csv` (or assemble later from ZIPs)
-   - Removes the old combined raw file if present
-
-7. **Explore the data**  
-   - Use the cleaned batch files for analysis, or `cleaned_students.parquet` for full-scale processing.
-   - See `summary_1M_real_data.csv` for quick stats.
+6. **Explore the data**  
+   - Run the Jupyter notebook: `jupyter notebook "scripts/Milestone2_3_SQL_and_Visualizations.ipynb"`
+   - Use the cleaned batch files for analysis, or `cleaned_students.parquet` for full-scale processing
+   - See `summary_1M_real_data.csv` for quick stats
+   - Check `output/` folder for exported query results
    - **Parquet files load 10-50x faster than CSV for large datasets!**
+
+---
+
+### **Advanced/Optional Steps**
+
+**Convert CSV files to Parquet format:**  
+```bash
+python scripts/convert_to_parquet.py
+```
+- Converts all CSV files to Parquet format (95% compression!)
+- Preserves original CSV files
+
+**Regenerate the raw dataset from scratch:**  
+```bash
+python scripts/real_data_milestone1.py
+```
+> *Generates 10×100K batch CSVs from IPEDS inputs.*
+
+**Clean the dataset in batches:**  
+```bash
+python scripts/clean_students_batches.py
+```
+- Processes batches 1–10 individually
+- Writes `students_batch_XX_100K_cleaned.csv`
 
 ---
 
@@ -202,15 +226,11 @@ Data Project/
 
 ```bash
 # Open the Jupyter notebook
-jupyter notebook "scripts/DEPI_SQL Integration & Querying-Copy1.ipynb"
+jupyter notebook "scripts/Milestone2_3_SQL_and_Visualizations.ipynb"
 ```
 
 **Prerequisites:**
 - Ensure `data/milestone1_real/cleaned_students.parquet` exists (run `python scripts/assemble_dataset.py` if needed)
-- **Build the database locally**: The database file is not included in the repo to keep it lightweight. Run the build script:
-  ```bash
-  python scripts/build_database.py
-  ```
 - All dependencies installed: `pip install -r requirements.txt`
 
 **What you'll get:**
@@ -329,6 +349,10 @@ Compress-Archive -Path data/milestone1_real/sample_100K_students.csv -Destinatio
 
 ## Data Details
 
+For complete data dictionary including all column definitions, data types, and valid ranges, see **[docs/data_dictionary.md](docs/data_dictionary.md)**.
+
+**Quick Overview:**
+
 - **Students**: 1,000,000 unique
 - **Universities**: 50 (see script for full list)
 - **Subjects**: 31
@@ -439,7 +463,7 @@ Our project follows a structured four-milestone approach to deliver a comprehens
 ### **Milestone Overview:**
 - **Milestone 1** (Oct 31, 2025) ✅ **Complete**: Data preprocessing, cleaning, and Parquet optimization
 - **Milestone 2** (Nov 7, 2025) ✅ **Complete**: SQL integration, star schema database, and advanced analytics
-- **Milestone 3** (Nov 20, 2025) 🎯 **Next**: Visualization and interactive dashboard development
+- **Milestone 3** (Nov 20, 2025) ✅ **Complete**: Visualization and interactive dashboard development
 - **Milestone 4** (Dec 1, 2025) 📋 **Planned**: Final documentation, report, and presentation
 
 ---
@@ -491,16 +515,21 @@ The dashboard design prioritizes clarity, accessibility, and actionable insights
 ---
 
  
-### **Milestone 3: Visualization & Reporting**
+### **✅ Milestone 3: Visualization & Reporting - COMPLETE**
 - **Goal**: Use Python to visualize student performance over time.
-- **Tasks**:
-  1. Use matplotlib or seaborn to show:
-     - Score trends
-     - Attendance heatmaps
-  2. (Optional) Create an interactive dashboard using Streamlit or Plotly Dash.
-- **Deliverables**:
-  - Python notebook with visualizations
-  - Simple dashboard (optional)
+- **Status**: ✅ **COMPLETE** - All objectives achieved
+- **Deliverables Completed**:
+  - ✅ Python notebook with visualizations: `Milestone2_3_SQL_and_Visualizations.ipynb`
+  - ✅ Interactive Streamlit dashboard: `dashboard/app.py`
+  - ✅ Attendance heatmaps (Plotly in dashboard)
+  - ✅ Score trends and distribution charts
+
+**Run the dashboard:**
+```bash
+python -m streamlit run dashboard/app.py
+```
+
+**Note:** Milestone 3 visualization requirements are fulfilled through both the interactive dashboard AND the visualizations in the Milestone 2 & 3 combined notebook.
 
 ---
 
@@ -527,7 +556,7 @@ Data is generated using public IPEDS sources and synthetic student records.
 
 ---
 
-**🎉 Milestone 1 & 2 Complete - Ready for Milestone 3: Visualization & Reporting!**
+**🎉 Milestones 1, 2 & 3 Complete - Ready for Milestone 4: Final Documentation!**
 
 ## 🏆 Project Status Summary
 
@@ -535,10 +564,10 @@ Data is generated using public IPEDS sources and synthetic student records.
 |-----------|--------|------------------|
 | **Milestone 1** | ✅ Complete | 1M student dataset, Parquet optimization, 95% compression |
 | **Milestone 2** | ✅ Complete | Star schema, DuckDB analytics, advanced SQL queries, visualizations, ER diagram |
-| **Milestone 3** | 🎯 Next | Interactive dashboard development |
+| **Milestone 3** | ✅ Complete | Interactive Streamlit dashboard, attendance heatmaps, visualizations |
 | **Milestone 4** | 📋 Planned | Final documentation and presentation |
 
-**Project structure optimized and ready for Milestone 3 development!**
+**Milestones 1-3 complete! Ready for Milestone 4: Final Documentation and Presentation.**
 
 ## Quick Start Guide
 
@@ -558,19 +587,25 @@ Data is generated using public IPEDS sources and synthetic student records.
    python scripts/assemble_dataset.py
    ```
 
-4. **Run Milestone 2 analysis**
+4. **Run Milestone 2 & 3 analysis**
    ```bash
-   jupyter notebook "scripts/DEPI_SQL Integration & Querying-Copy1.ipynb"
+   jupyter notebook "scripts/Milestone2_3_SQL_and_Visualizations.ipynb"
    ```
    Or on Windows PowerShell:
    ```powershell
-   jupyter notebook "scripts\DEPI_SQL Integration & Querying-Copy1.ipynb"
+   jupyter notebook "scripts\Milestone2_3_SQL_and_Visualizations.ipynb"
    ```
 
-5. **View results**
+5. **Launch the interactive dashboard**
+   ```bash
+   python -m streamlit run dashboard/app.py
+   ```
+
+6. **View results**
    - Check `output/` folder for exported CSV files
    - Review visualizations in the notebook
    - Examine ER diagram in the notebook
+   - Explore the interactive dashboard at http://localhost:8501
 
 ## Repository Structure for GitHub
 
