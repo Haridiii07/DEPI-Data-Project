@@ -73,8 +73,17 @@ def get_connection():
         if missing_files:
             st.info("⚠️ Optimized data files not found. Checking for data parts...")
             
+            
             # Check if we need to stitch the source file
-            data_path = base_dir / 'data' / 'cleaned_students.parquet'
+            import os
+            is_cloud = os.getenv('STREAMLIT_SHARING_MODE') or os.getenv('STREAMLIT_RUNTIME_ENV')
+            
+            if is_cloud:
+                # Use 200K sample on Streamlit Cloud
+                data_path = base_dir / 'data' / 'sample_200K_students.parquet'
+            else:
+                # Use full dataset locally (with stitching if needed)
+                data_path = base_dir / 'data' / 'cleaned_students.parquet'
             if not data_path.exists():
                 part1 = data_path.parent / f"{data_path.name}.part1"
                 if part1.exists():

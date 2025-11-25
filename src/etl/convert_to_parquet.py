@@ -3,6 +3,18 @@ import os
 from pathlib import Path
 import sys
 
+def get_data_path(base_dir):
+    """Get the appropriate data path based on environment."""
+    # Check if running on Streamlit Cloud
+    is_cloud = os.getenv('STREAMLIT_SHARING_MODE') or os.getenv('STREAMLIT_RUNTIME_ENV')
+    
+    if is_cloud:
+        # Use 200K sample on Streamlit Cloud (free tier limits)
+        return base_dir / 'data' / 'sample_200K_students.parquet'
+    else:
+        # Use full dataset locally
+        return base_dir / 'data' / 'cleaned_students.parquet'
+
 def convert_to_parquet():
     """
     Converts the raw data into a Star Schema and saves as separate Parquet files.
@@ -12,7 +24,7 @@ def convert_to_parquet():
     
     # Define paths
     base_dir = Path(__file__).parent.parent.parent
-    data_path = base_dir / 'data' / 'cleaned_students.parquet'
+    data_path = get_data_path(base_dir)
     output_dir = base_dir / 'data' / 'star_schema'
     
     # Ensure output directory exists
@@ -21,7 +33,7 @@ def convert_to_parquet():
     # Check if data exists, if not, try to stitch it
     if not data_path.exists():
         print(f"⚠️ Data file not found at {data_path}")
-        print("🧵 Attempting to stitch file from parts...")
+        print(f"🧵 Attempting to stitch file from parts...")
         
         part1 = data_path.parent / f"{data_path.name}.part1"
         if part1.exists():
