@@ -157,6 +157,9 @@ if conn:
     subjects = get_filter_options(conn, "subject", "dim_course")
     selected_subject = st.sidebar.selectbox("Subject", ["All"] + subjects)
 
+    st.sidebar.markdown("---")
+    st.sidebar.caption("v1.1 | Cloud Optimized")
+
 st.title("🎓 Student Performance Analytics")
 
 tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "📚 Subject & Cohort", "🚨 Risk Analysis", "👤 Student Profile"])
@@ -196,6 +199,19 @@ if conn:
         kpi_data = conn.execute(kpi_query, params).fetchone()
         
         col1, col2, col3, col4 = st.columns(4)
+        col1.metric("Avg Score", f"{kpi_data[0]:.1f}" if kpi_data[0] else "0.0")
+        col2.metric("Attendance Rate", f"{kpi_data[1]:.1f}%" if kpi_data[1] else "0.0%")
+        col3.metric("Total Students", f"{kpi_data[2]:,}" if kpi_data[2] else "0")
+        col4.metric("Pass Rate", f"{kpi_data[3]:.1f}%" if kpi_data[3] else "0.0%")
+        
+        st.markdown("---")
+        
+        c1, c2 = st.columns(2)
+        
+        with c1:
+            st.subheader("Score Distribution")
+            hist_query = f"""
+                SELECT f.score 
                 FROM fact_student_performance f
                 JOIN dim_date d ON f.date_id = d.date_id
                 JOIN dim_university u ON f.university_key = u.university_key
@@ -393,6 +409,3 @@ if conn:
                 st.warning("Student number not found.")
         else:
             st.info("Enter a student number (1-10,000) to view their academic profile.")
-
-else:
-    st.warning("⚠️ Please build the database to view the dashboard.")
