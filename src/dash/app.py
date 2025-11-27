@@ -79,8 +79,8 @@ def get_connection():
             is_cloud = os.getenv('STREAMLIT_SHARING_MODE') or os.getenv('STREAMLIT_RUNTIME_ENV')
             
             if is_cloud:
-                # Use 200K sample on Streamlit Cloud
-                data_path = base_dir / 'data' / 'sample_200K_students.parquet'
+                # Use 50K sample on Streamlit Cloud (memory limits)
+                data_path = base_dir / 'data' / 'sample_50K_students.parquet'
             else:
                 # Use full dataset locally (with stitching if needed)
                 data_path = base_dir / 'data' / 'cleaned_students.parquet'

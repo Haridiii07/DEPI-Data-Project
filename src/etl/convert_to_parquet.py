@@ -9,8 +9,8 @@ def get_data_path(base_dir):
     is_cloud = os.getenv('STREAMLIT_SHARING_MODE') or os.getenv('STREAMLIT_RUNTIME_ENV')
     
     if is_cloud:
-        # Use 200K sample on Streamlit Cloud (free tier limits)
-        return base_dir / 'data' / 'sample_200K_students.parquet'
+        # Use 50K sample on Streamlit Cloud (free tier memory limits)
+        return base_dir / 'data' / 'sample_50K_students.parquet'
     else:
         # Use full dataset locally
         return base_dir / 'data' / 'cleaned_students.parquet'
