@@ -353,9 +353,9 @@ if conn:
         col_search, col_info = st.columns([1, 2])
         
         with col_search:
-            student_number = st.number_input("Enter Student Number (1-50,000)", 
+            student_number = st.number_input("Enter Student Number (1-10,000)", 
                                             min_value=1, 
-                                            max_value=50000, 
+                                            max_value=10000, 
                                             step=1,
                                             value=None)
         
@@ -398,7 +398,7 @@ if conn:
             else:
                 st.warning("Student number not found.")
         else:
-            st.info("Enter a student number (1-50,000) to view their academic profile.")
+            st.info("Enter a student number (1-10,000) to view their academic profile.")
 
 else:
     st.warning("⚠️ Please build the database to view the dashboard.")
