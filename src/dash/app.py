@@ -71,10 +71,9 @@ def get_connection():
         missing_files = [f for f in required_files if not (parquet_dir / f).exists()]
         
         if missing_files:
-            st.info("⚠️ Optimized data files not found. Checking for data parts...")
+            st.info("⚠️ Optimized data files not found. Generating from source data...")
             
-            
-            # Check if we need to stitch the source file
+            # Determine which data file to use
             import os
             is_cloud = os.getenv('STREAMLIT_SHARING_MODE') or os.getenv('STREAMLIT_RUNTIME_ENV')
             
@@ -84,17 +83,26 @@ def get_connection():
             else:
                 # Use full dataset locally (with stitching if needed)
                 data_path = base_dir / 'data' / 'cleaned_students.parquet'
-            if not data_path.exists():
-                part1 = data_path.parent / f"{data_path.name}.part1"
-                if part1.exists():
-                     st.info("🧵 Stitching data parts...")
-                # The conversion script handles the actual stitching, we just need to run it.
+                
+                # Check if we need to stitch parts for local development
+                if not data_path.exists():
+                    part1 = data_path.parent / f"{data_path.name}.part1"
+                    if part1.exists():
+                        st.info("🧵 Stitching data parts...")
+                        # The conversion script will handle stitching
             
+            # Verify the data file exists
+            if not data_path.exists():
+                st.error(f"❌ Data file not found: {data_path.name}")
+                return None
+            
+            # Run the conversion script
             try:
+                st.info(f"📊 Processing data from {data_path.name}...")
                 build_script_path = base_dir / "src" / "etl" / "convert_to_parquet.py"
                 if not build_script_path.exists():
-                     st.error(f"Conversion script not found at {build_script_path}.")
-                     return None
+                    st.error(f"Conversion script not found at {build_script_path}.")
+                    return None
                 
                 subprocess.run([sys.executable, str(build_script_path)], check=True)
                 st.success("✅ Data optimized successfully!")
