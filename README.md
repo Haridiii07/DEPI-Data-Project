@@ -1,196 +1,255 @@
 # 🎓 Student Performance Dashboard
 
-> **🌐 Live Demo:** https://depi-data-project-sxczyh8wks5x4bdwjznwgw.streamlit.app/
+<div align="center">
 
-An interactive analytics platform for analyzing student performance data (2022). Built with Python, DuckDB, and Streamlit.
+### Interactive Analytics Platform for Student Data
 
-**Cloud (10K students)** | **Local (1M students)**
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Streamlit_Cloud-FF4B4B?style=for-the-badge)](https://depi-data-project-sxczyh8wks5x4bdwjznwgw.streamlit.app/)
+[![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)](https://github.com/Haridiii07/DEPI-Data-Project)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-Educational-orange?style=for-the-badge)](LICENSE)
 
-![Status](https://img.shields.io/badge/Status-Active-success) ![Deployed](https://img.shields.io/badge/Live-Streamlit%20Cloud-red) ![Python](https://img.shields.io/badge/Python-3.8+-blue) ![License](https://img.shields.io/badge/License-Educational-orange)
+**Analyze student performance across universities with powerful visualizations and insights**
+
+[Features](#-features) • [Live Demo](#-live-demo) • [Quick Start](#-quick-start) • [Documentation](#-documentation)
+
+</div>
+
+---
+
+## 🌟 Overview
+
+A comprehensive analytics dashboard for student performance data, featuring:
+- **1 Million Students** - Full dataset for local analysis
+- **10,000 Students** - Optimized cloud deployment
+- **Real-time Filtering** - By major, subject, year
+- **Interactive Visualizations** - Charts, heatmaps, distributions
+- **Risk Analysis** - Identify at-risk students
+- **Individual Profiles** - Detailed student lookup
+
+Built with **Python**, **DuckDB**, **Streamlit**, and **Plotly** for fast, interactive data exploration.
+
+---
+
+## 🎯 Features
+
+### 📊 **Overview Dashboard**
+- Key Performance Indicators (KPIs)
+- Average scores, attendance rates, pass rates
+- Score distribution histograms
+- Performance by major bar charts
+
+### 📚 **Subject & Cohort Analysis**
+- Top performing subjects
+- Interactive attendance heatmaps
+- Subject-major cross-analysis
+- Filter by year/semester
+
+### 🚨 **Risk Analysis**
+- Identify at-risk students (score < 60 or low attendance)
+- Scatter plot visualizations
+- Downloadable CSV reports
+- Predictive indicators
+
+### 👤 **Student Profile**
+- Search by student number (1-10,000 on cloud)
+- Individual academic history
+- Course performance timeline
+- Detailed grade breakdown
+
+---
+
+## 🌐 Live Demo
+
+**Try it now:** [https://depi-data-project-sxczyh8wks5x4bdwjznwgw.streamlit.app/](https://depi-data-project-sxczyh8wks5x4bdwjznwgw.streamlit.app/)
+
+The live demo uses a 10K student sample optimized for Streamlit Cloud's free tier.
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
+### Cloud Version (Recommended)
+Simply visit the [live demo](https://depi-data-project-sxczyh8wks5x4bdwjznwgw.streamlit.app/) - no installation required!
+
+### Local Installation
+
+#### Prerequisites
+- Python 3.8 or higher
+- Git
+
+#### Steps
+
+1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd "Data Project"
+git clone https://github.com/Haridiii07/DEPI-Data-Project.git
+cd DEPI-Data-Project
+```
+
+2. **Install dependencies**
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Launch the Dashboard
+3. **Run the dashboard**
 ```bash
-python -m streamlit run src/dash/app.py
+streamlit run src/dash/app.py
 ```
 
-That's it! The app will automatically:
-- ✅ Detect if the database exists
-- ✅ Build it from the data if needed (~2-3 minutes first time)
-- ✅ Open in your browser at http://localhost:8501
+The dashboard will open automatically at `http://localhost:8501`
 
-### Optional: Run Analytics Notebook
-```bash
-jupyter notebook "notebooks/Milestone2_3_SQL_and_Visualizations.ipynb"
-```
-
-📖 **Need more details?** Check the [Setup Guide](docs/SETUP_GUIDE.md) for advanced options.
-
----
-
-## ✨ What You Get
-
-- 📊 **1M Student Records** - Real university data + synthetic student performance
-- ⚡ **Interactive Dashboard** - Filter by university, subject, semester, performance
-- 📈 **Rich Visualizations** - Heatmaps, trends, distributions, correlations
-- 🗄️ **Fast Analytics** - DuckDB star schema for sub-second queries
-- 📁 **Efficient Storage** - Parquet format (75MB vs 1.6GB CSV)
+> **Note:** First load may take 30-60 seconds as it builds the star schema from the 1M student dataset.
 
 ---
 
 ## 📂 Project Structure
 
 ```
-Data Project/
+DEPI-Data-Project/
+├── src/
+│   ├── dash/
+│   │   └── app.py                    # Main Streamlit dashboard
+│   └── etl/
+│       ├── generate_star_schema.py   # Star schema generator
+│       ├── create_cloud_sample.py    # 10K sample creator
+│       ├── split_data.py             # File splitter utility
+│       └── majors_config.py          # Academic configuration
 │
-├── 📁 src/                          # Source code
-│   ├── dash/                        # Dashboard application
-│   │   └── app.py                   # Main Streamlit app
-│   ├── etl/                         # Data processing scripts
-│   │   ├── real_data_milestone1.py  # Generate 1M student records
-│   │   ├── clean_students_batches.py # Data cleaning
-│   │   ├── build_database.py        # Create DuckDB database
-│   │   └── majors_config.py         # Academic major configurations
-│   └── tools/                       # Utility tools
-│       └── ipeds-scraper/           # IPEDS data downloader
+├── data/
+│   ├── sample_50K_students.parquet   # Cloud sample (0.78 MB)
+│   ├── cleaned_students.parquet.part1 # Local data part 1
+│   ├── cleaned_students.parquet.part2 # Local data part 2
+│   └── star_schema/                  # Generated schema (gitignored)
 │
-├── � data/                         # Data files
-│   └── processed/                   # Cleaned data (Parquet format)
-│       └── milestone1_real/         
-│           └── cleaned_students.parquet  # Main dataset (75MB)
+├── docs/
+│   ├── DEPLOYMENT.md                 # Deployment guide
+│   ├── DASHBOARD_GUIDE.md            # User guide
+│   ├── CHANGELOG.md                  # Version history
+│   └── README.md                     # Documentation index
 │
-├── 📁 warehouse/                    # Database storage (auto-created)
-│   └── student_performance.duckdb   # DuckDB database (~180MB, git-ignored)
-│
-├── 📁 docs/                         # Documentation
-│   ├── SETUP_GUIDE.md              # Detailed setup instructions
-│   ├── DASHBOARD_GUIDE.md          # How to use the dashboard
-│   ├── SQL_ANALYTICS.md            # SQL queries and analytics
-│   ├── PARQUET_GUIDE.md            # Data format explanation
-│   ├── TROUBLESHOOTING.md          # Common issues and fixes
-│   ├── VALIDATION.md               # Data validation commands
-│   ├── DEVELOPMENT.md              # Contributor guide
-│   ├── CHANGELOG.md                # Version history
-│   ├── data_dictionary.md          # Column definitions
-│   └── assets/                     # Images (ERD, wireframes, timeline)
-│
-├── 📁 notebooks/                    # Jupyter notebooks
-│   └── Milestone2_3_SQL_and_Visualizations.ipynb
-│
-├── 📁 analytics/                    # Exported analysis results
-│   └── exports/                    # CSV outputs from queries
-│
-├── 📁 tests/                        # Test suite
-│   └── test_data_validation.py     # Data integrity tests
-│
-├── 📜 requirements.txt              # Python dependencies
-├── 📜 pyproject.toml               # Project configuration
-└── 📜 README.md                    # You are here!
+├── tests/                            # Test suite
+├── .github/workflows/                # CI/CD pipelines
+└── requirements.txt                  # Python dependencies
 ```
-
-### Key Directories Explained
-
-| Directory | Purpose | Important Files |
-|-----------|---------|----------------|
-| `src/dash/` | Dashboard UI | `app.py` - Run this to start the app |
-| `src/etl/` | Data pipeline | `build_database.py` - Creates the database |
-| `data/processed/` | Clean data | `cleaned_students.parquet` - 1M student records |
-| `warehouse/` | Database | Auto-created when you run the app |
-| `docs/` | Documentation | Start with `SETUP_GUIDE.md` |
 
 ---
 
-## 📊 Features
+## 💡 How It Works
 
-### Dashboard Capabilities
-- 🎯 **KPI Overview** - Average scores, attendance rates, pass rates
-- 🔍 **Smart Filters** - By university type, subject, semester, date range
-- 📈 **Visualizations**
-  - Performance distributions
-  - Attendance heatmaps
-  - Score trends over time
-  - Subject comparisons
-- 💾 **Export Data** - Download filtered results as CSV
+### Data Pipeline
 
-### Technical Features
-- **Fast Performance** - Parquet + DuckDB = 10-50× faster than CSV
-- **Star Schema** - Optimized for analytics queries
-- **Auto-Setup** - Database builds automatically on first run
-- **Test Suite** - Automated data validation with pytest
+1. **Raw Data** → Cleaned student records (1M students, 10M+ records)
+2. **Parquet Format** → Columnar storage for efficient querying
+3. **Star Schema** → DuckDB optimized structure
+4. **Streamlit Dashboard** → Interactive visualization
+
+### Cloud vs Local
+
+| Feature | Cloud | Local |
+|---------|-------|-------|
+| Students | 10,000 | 1,000,000 |
+| Data Size | 0.78 MB | 72 MB |
+| Load Time | ~5s | ~30s |
+| Search Range | 1-10,000 | All students |
+
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend:** Streamlit
+- **Database:** DuckDB (in-memory analytics)
+- **Data Format:** Apache Parquet
+- **Visualization:** Plotly, Matplotlib
+- **Data Processing:** Pandas, NumPy
+- **Deployment:** Streamlit Cloud
+- **CI/CD:** GitHub Actions
 
 ---
 
 ## 📚 Documentation
 
-Start here based on what you need:
-
-| I want to... | Read this |
-|--------------|-----------|
-| 🚀 Set up the project | [SETUP_GUIDE.md](docs/SETUP_GUIDE.md) |
-| 🎨 Use the dashboard | [DASHBOARD_GUIDE.md](docs/DASHBOARD_GUIDE.md) |
-| 🗄️ Understand the database | [SQL_ANALYTICS.md](docs/SQL_ANALYTICS.md) |
-| 📁 Learn about Parquet format | [PARQUET_GUIDE.md](docs/PARQUET_GUIDE.md) |
-| 🐛 Fix a problem | [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) |
-| ✅ Validate data | [VALIDATION.md](docs/VALIDATION.md) |
-| 🤝 Contribute | [DEVELOPMENT.md](docs/DEVELOPMENT.md) |
+| Document | Description |
+|----------|-------------|
+| [DEPLOYMENT.md](docs/DEPLOYMENT.md) | Cloud and local deployment guide |
+| [DASHBOARD_GUIDE.md](docs/DASHBOARD_GUIDE.md) | How to use the dashboard features |
+| [CHANGELOG.md](docs/CHANGELOG.md) | Version history and updates |
+| [DEVELOPMENT.md](docs/DEVELOPMENT.md) | Contributor guide |
 
 ---
 
-## 🛠️ Tech Stack
+## 🎓 Use Cases
 
-- **Frontend**: Streamlit
-- **Database**: DuckDB (embedded analytics database)
-- **Data Format**: Apache Parquet (columnar storage)
-- **Visualization**: Plotly, Matplotlib, Seaborn
-- **Data Processing**: Pandas, NumPy
-- **Testing**: Pytest
-
----
-
-## � Milestones
-
-| Milestone | Status | Description |
-|-----------|--------|-------------|
-| M1: Data Preprocessing | ✅ Complete | 1M student records generated and cleaned |
-| M2: SQL Analytics | ✅ Complete | Star schema database with advanced queries |
-| M3: Visualization | ✅ Complete | Interactive Streamlit dashboard |
-| M4: Documentation | 🚧 In Progress | Final documentation and guides |
+- **Educational Institutions:** Monitor student performance trends
+- **Data Analysts:** Practice with real-world educational data
+- **Researchers:** Study performance patterns and correlations
+- **Developers:** Learn Streamlit, DuckDB, and data visualization
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please:
+Contributions are welcome! Please:
 
-1. Read [DEVELOPMENT.md](docs/DEVELOPMENT.md) for coding standards
-2. Run tests before submitting: `pytest`
-3. Update [CHANGELOG.md](docs/CHANGELOG.md) with your changes
-4. Keep commits focused and well-documented
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
----
-
-## ❓ Need Help?
-
-- 📖 Check [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for common issues
-- 🐛 Found a bug? Open an issue
-- 💡 Have a question? See the documentation guides above
+See [DEVELOPMENT.md](docs/DEVELOPMENT.md) for detailed guidelines.
 
 ---
 
-## 📄 License
+## 📊 Data Information
 
-Educational and research purposes only. Data combines public IPEDS sources with synthetic student records.
+- **Dataset:** 1,000,000 students across 30 universities
+- **Time Period:** Academic year 2022
+- **Records:** ~10 million course enrollments
+- **Majors:** 62 different academic programs
+- **Subjects:** 100+ different courses
+- **Format:** Parquet (compressed columnar storage)
 
 ---
 
-**Built with ❤️ for data analytics education**
+## 🔐 Privacy & Ethics
+
+This dataset combines:
+- **Public IPEDS data** - University institutional data
+- **Synthetic student records** - Algorithmically generated performance data
+
+No real student privacy information is included. All data is for **educational and research purposes only**.
+
+---
+
+## 📝 License
+
+This project is for **educational purposes**. The data combines public institutional data with synthetic student records generated for academic analysis.
+
+---
+
+## 👨‍💻 Authors
+
+**DEPI Data Project Team**
+- Built as part of the Digital Egypt Pioneers Initiative (DEPI)
+- Contact: [GitHub Repository](https://github.com/Haridiii07/DEPI-Data-Project)
+
+---
+
+## 🙏 Acknowledgments
+
+- **IPEDS** - Integrated Postsecondary Education Data System
+- **Streamlit** - Amazing framework for data apps
+- **DuckDB** - Fast in-process analytical database
+- **DEPI Program** - Digital Egypt Pioneers Initiative
+
+---
+
+<div align="center">
+
+**⭐ If you find this project useful, please consider giving it a star!**
+
+[![GitHub stars](https://img.shields.io/github/stars/Haridiii07/DEPI-Data-Project?style=social)](https://github.com/Haridiii07/DEPI-Data-Project/stargazers)
+
+Made with ❤️ for data analytics education
+
+</div>

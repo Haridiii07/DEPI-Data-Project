@@ -35,7 +35,7 @@ jobs:
           # Check if we have sample data, otherwise skip
           if [ -f "data/processed/milestone1_real/sample_100K_students.parquet" ]; then
             echo "Sample data found, testing data conversion..."
-            python src/etl/convert_to_parquet.py
+            python src/etl/generate_star_schema.py
             echo "Data converted successfully to Parquet Star Schema"
           else
             echo "No sample data available, skipping data conversion test"

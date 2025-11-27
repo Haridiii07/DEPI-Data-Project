@@ -108,7 +108,7 @@ def get_connection():
             # Run the conversion script (with loading spinner)
             try:
                 with st.spinner('Loading dashboard data...'):
-                    build_script_path = base_dir / "src" / "etl" / "convert_to_parquet.py"
+                    build_script_path = base_dir / "src" / "etl" / "generate_star_schema.py"
                     if not build_script_path.exists():
                         st.error(f"Conversion script not found.")
                         return None
