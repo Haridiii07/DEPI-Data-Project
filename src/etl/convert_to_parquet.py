@@ -84,7 +84,8 @@ def convert_to_parquet():
                 CAST(credits AS INTEGER) AS credits,
                 CAST(course_level AS VARCHAR) AS course_level,
                 CAST(batch_number AS INTEGER) AS batch_number,
-                CAST(ipeds_institutional_factor AS INTEGER) AS ipeds_institutional_factor
+                CAST(ipeds_institutional_factor AS INTEGER) AS ipeds_institutional_factor,
+                CAST(student_number AS INTEGER) AS student_number
             FROM raw_student_data
             WHERE student_id IS NOT NULL AND date IS NOT NULL;
         """)
@@ -99,8 +100,9 @@ def convert_to_parquet():
                 ROW_NUMBER() OVER (ORDER BY student_id) AS student_key,
                 student_id,
                 student_name,
-                major
-            FROM (SELECT DISTINCT student_id, student_name, major FROM staging_student_performance);
+                major,
+                student_number
+            FROM (SELECT DISTINCT student_id, student_name, major, student_number FROM staging_student_performance);
         """)
         conn.execute(f"COPY dim_student TO '{output_dir / 'dim_student.parquet'}' (FORMAT PARQUET);")
         print("   - dim_student.parquet created")
