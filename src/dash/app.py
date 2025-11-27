@@ -69,21 +69,35 @@ def get_connection():
                           'dim_university.parquet', 'dim_course.parquet', 'dim_date.parquet']
         
         missing_files = [f for f in required_files if not (parquet_dir / f).exists()]
+        needs_regeneration = False
         
-        if missing_files:
+        # If files exist, check if they have the student_number column
+        if not missing_files:
+            try:
+                # Try to load and check for student_number
+                conn.execute(f"CREATE TEMP VIEW temp_dim_student AS SELECT * FROM '{parquet_dir / 'dim_student.parquet'}'")
+                test_result = conn.execute("SELECT student_number FROM temp_dim_student LIMIT 1").fetchone()
+                conn.execute("DROP VIEW temp_dim_student")
+            except Exception:
+                # Column doesn't exist, need to regenerate
+                st.warning("🔄 Old schema detected. Regenerating with updated structure...")
+                import shutil
+                if parquet_dir.exists():
+                    shutil.rmtree(parquet_dir)
+                needs_regeneration = True
+        
+        # Generate star schema if files are missing or need regeneration
+        if missing_files or needs_regeneration:
             st.info("⚠️ Optimized data files not found. Generating from source data...")
             
             # Determine which data file to use based on what's available
-            # Cloud deployments will have the 50K sample, local dev has full data
             sample_50k = base_dir / 'data' / 'sample_50K_students.parquet'
             full_data = base_dir / 'data' / 'cleaned_students.parquet'
             
             if sample_50k.exists():
-                # Use 50K sample if available (Streamlit Cloud)
                 data_path = sample_50k
-                st.info("📊 Using 50K sample for cloud deployment...")
+                st.info("📊 Using 10K sample for cloud deployment...")
             elif full_data.exists():
-                # Use full dataset if available (local)
                 data_path = full_data
                 st.info("📊 Using full dataset...")
             else:
@@ -111,28 +125,13 @@ def get_connection():
                 return None
         
         # Load Parquet files as Views
-        # Using Views is faster than creating tables as it reads directly from Parquet
         conn.execute(f"CREATE VIEW fact_student_performance AS SELECT * FROM '{parquet_dir / 'fact_student_performance.parquet'}'")
         conn.execute(f"CREATE VIEW dim_student AS SELECT * FROM '{parquet_dir / 'dim_student.parquet'}'")
         conn.execute(f"CREATE VIEW dim_university AS SELECT * FROM '{parquet_dir / 'dim_university.parquet'}'")
         conn.execute(f"CREATE VIEW dim_course AS SELECT * FROM '{parquet_dir / 'dim_course.parquet'}'")
         conn.execute(f"CREATE VIEW dim_date AS SELECT * FROM '{parquet_dir / 'dim_date.parquet'}'")
         
-        # Check if student_number column exists in dim_student
-        try:
-            test_query = "SELECT student_number FROM dim_student LIMIT 1"
-            conn.execute(test_query).fetchone()
-        except Exception:
-            # Column doesn't exist, need to regenerate the star schema
-            st.warning("🔄 Updating data schema... This will take a moment.")
-            import shutil
-            if parquet_dir.exists():
-                shutil.rmtree(parquet_dir)
-            # Re-trigger the missing files logic
-            missing_files = required_files
-        
-        if not missing_files:
-            return conn
+        return conn
         
     except Exception as e:
         st.error(f"❌ Error connecting to database: {e}")
