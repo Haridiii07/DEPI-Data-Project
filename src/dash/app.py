@@ -350,59 +350,55 @@ if conn:
 
     with tab4:
         st.subheader("👤 Student Lookup")
+        col_search, col_info = st.columns([1, 2])
         
-        # Get list of students from the dimension table
-        students_query = "SELECT student_id, student_name, major FROM dim_student ORDER BY student_name LIMIT 500"
-        students_df = conn.execute(students_query).fetchdf()
+        with col_search:
+            student_number = st.number_input("Enter Student Number (1-50,000)", 
+                                            min_value=1, 
+                                            max_value=50000, 
+                                            step=1,
+                                            value=None)
         
-        if not students_df.empty:
-            # Create a dropdown with student names and IDs
-            student_options = {f"{row['student_name']} ({row['student_id']})": row['student_id'] 
-                             for _, row in students_df.iterrows()}
+        if student_number:
+            # Query student by student_number field
+            student_query = "SELECT * FROM dim_student WHERE student_number = ?"
+            student_info = conn.execute(student_query, [student_number]).fetchdf()
             
-            selected_student = st.selectbox(
-                "Select a Student",
-                options=[""] + list(student_options.keys()),
-                index=0
-            )
-            
-            if selected_student:
-                student_id = student_options[selected_student]
-                student_query = "SELECT * FROM dim_student WHERE student_id = ?"
-                student_info = conn.execute(student_query, [student_id]).fetchdf()
+            if not student_info.empty:
+                with col_info:
+                    st.success(f"**Student #{student_number}:** {student_info['student_name'].iloc[0]} | **Major:** {student_info['major'].iloc[0]}")
                 
-                if not student_info.empty:
-                    st.success(f"**Student:** {student_info['student_name'].iloc[0]} | **Major:** {student_info['major'].iloc[0]}")
+                student_id = student_info['student_id'].iloc[0]
+                
+                history_query = """
+                    SELECT 
+                        d.year, d.semester, c.subject, f.score, f.grade, f.attendance_flag
+                    FROM fact_student_performance f
+                    JOIN dim_student s ON f.student_key = s.student_key
+                    JOIN dim_date d ON f.date_id = d.date_id
+                    JOIN dim_course c ON f.course_key = c.course_key
+                    WHERE s.student_id = ?
+                    ORDER BY d.year DESC, d.semester
+                """
+                history_df = conn.execute(history_query, [student_id]).fetchdf()
+                
+                if not history_df.empty:
+                    st.info(f"📊 **Academic Summary:** {len(history_df)} courses · {history_df['subject'].nunique()} subjects · {history_df['year'].min()}-{history_df['year'].max()}")
                     
-                    history_query = """
-                        SELECT 
-                            d.year, d.semester, c.subject, f.score, f.grade, f.attendance_flag
-                        FROM fact_student_performance f
-                        JOIN dim_student s ON f.student_key = s.student_key
-                        JOIN dim_date d ON f.date_id = d.date_id
-                        JOIN dim_course c ON f.course_key = c.course_key
-                        WHERE s.student_id = ?
-                        ORDER BY d.year DESC, d.semester
-                    """
-                    history_df = conn.execute(history_query, [student_id]).fetchdf()
+                    sum_col1, sum_col2, sum_col3 = st.columns(3)
+                    sum_col1.metric("Avg Score", f"{history_df['score'].mean():.1f}")
+                    sum_col2.metric("Attendance", f"{history_df['attendance_flag'].mean()*100:.1f}%")
+                    sum_col3.metric("Total Courses", len(history_df))
                     
-                    if not history_df.empty:
-                        st.info(f"📊 **Academic Summary:** {len(history_df)} courses · {history_df['subject'].nunique()} subjects · {history_df['year'].min()}-{history_df['year'].max()}")
-                        
-                        sum_col1, sum_col2, sum_col3 = st.columns(3)
-                        sum_col1.metric("Avg Score", f"{history_df['score'].mean():.1f}")
-                        sum_col2.metric("Attendance", f"{history_df['attendance_flag'].mean()*100:.1f}%")
-                        sum_col3.metric("Total Courses", len(history_df))
-                        
-                        st.subheader("📚 Course History")
-                        st.markdown("*Each row represents one course taken by this student.*")
-                        st.dataframe(history_df, use_container_width=True)
-                    else:
-                        st.warning("No course history found for this student.")
+                    st.subheader("📚 Course History")
+                    st.markdown("*Each row represents one course taken by this student.*")
+                    st.dataframe(history_df, use_container_width=True)
+                else:
+                    st.warning("No course history found for this student.")
             else:
-                st.info("Select a student from the dropdown to view their academic profile.")
+                st.warning("Student number not found.")
         else:
-            st.error("No student data available.")
+            st.info("Enter a student number (1-50,000) to view their academic profile.")
 
 else:
     st.warning("⚠️ Please build the database to view the dashboard.")
