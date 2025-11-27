@@ -221,7 +221,7 @@ if conn:
                 fig_hist = px.histogram(df_scores, x="score", nbins=20, 
                                       color_discrete_sequence=['#3b82f6'])
                 fig_hist.update_layout(plot_bgcolor="white")
-                st.plotly_chart(fig_hist, use_container_width=True)
+                st.plotly_chart(fig_hist, width='stretch')
             
         with c2:
             st.subheader("Performance by Major")
@@ -243,7 +243,7 @@ if conn:
                                title="Top Majors by Average Score",
                                color_discrete_sequence=px.colors.qualitative.Prism)
                 fig_bar.update_layout(plot_bgcolor="white", showlegend=False)
-                st.plotly_chart(fig_bar, use_container_width=True)
+                st.plotly_chart(fig_bar, width='stretch')
 
     with tab2:
         st.subheader("📚 Subject Deep Dive")
@@ -267,7 +267,7 @@ if conn:
                            title="Top 10 Subjects by Average Score",
                            color='avg_score', color_continuous_scale='Viridis')
             fig_sub.update_layout(plot_bgcolor="white", yaxis={'categoryorder':'total ascending'})
-            st.plotly_chart(fig_sub, use_container_width=True)
+            st.plotly_chart(fig_sub, width='stretch')
         
         st.markdown("---")
         st.subheader("🔥 Attendance Heatmap")
@@ -297,7 +297,7 @@ if conn:
                 color_continuous_scale="RdBu",
                 aspect="auto"
             )
-            st.plotly_chart(fig_heat, use_container_width=True)
+            st.plotly_chart(fig_heat, width='stretch')
 
     with tab3:
         st.subheader("🚨 At-Risk Student Analysis")
@@ -330,7 +330,7 @@ if conn:
         if not df_risk.empty:
             fig_risk = px.scatter(df_risk, x='attendance', y='score', trendline="ols")
             fig_risk.add_hrect(y0=0, y1=60, line_width=0, fillcolor="red", opacity=0.1)
-            st.plotly_chart(fig_risk, use_container_width=True)
+            st.plotly_chart(fig_risk, width='stretch')
             
         st.subheader("📥 Download At-Risk List")
         risk_list_query = f"""
@@ -399,7 +399,7 @@ if conn:
                     
                     st.subheader("📚 Course History")
                     st.markdown("*Each row represents one course taken by this student.*")
-                    st.dataframe(history_df, use_container_width=True)
+                    st.dataframe(history_df, width='stretch')
                 else:
                     st.warning("No course history found for this student.")
             else:
