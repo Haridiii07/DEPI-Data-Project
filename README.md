@@ -1,8 +1,12 @@
 # 🎓 Student Performance Dashboard
 
-An interactive analytics platform for analyzing 1 million student records across 50 U.S. universities (2010–2024). Built with Python, DuckDB, and Streamlit.
+> **🌐 Live Demo:** https://depi-data-project-sxczyh8wks5x4bdwjznwgw.streamlit.app/
 
-![Status](https://img.shields.io/badge/Status-Active-success) ![Python](https://img.shields.io/badge/Python-3.8+-blue) ![License](https://img.shields.io/badge/License-Educational-orange)
+An interactive analytics platform for analyzing student performance data (2022). Built with Python, DuckDB, and Streamlit.
+
+**Cloud (10K students)** | **Local (1M students)**
+
+![Status](https://img.shields.io/badge/Status-Active-success) ![Deployed](https://img.shields.io/badge/Live-Streamlit%20Cloud-red) ![Python](https://img.shields.io/badge/Python-3.8+-blue) ![License](https://img.shields.io/badge/License-Educational-orange)
 
 ---
 

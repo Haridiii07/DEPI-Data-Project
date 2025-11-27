@@ -1,15 +1,3 @@
-# Changelog
-
-Documenting notable updates across milestones. Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) style where possible.
-
----
-
-## [Unreleased]
-- Database relocated from `scripts/` to `warehouse/` directory for better organization
-- Updated all documentation to reflect new project structure (`src/etl/`, `src/dash/`, `warehouse/`)
-- Fixed empty fact table issue in database build process
-- Documentation split into dedicated guides (setup, parquet, SQL, dashboard, development, validation, troubleshooting)
-- README streamlined to highlight key information and link to docs
 - Updated CI/CD workflow with correct paths and proper testing pipeline
 
 ---

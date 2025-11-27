@@ -8,8 +8,9 @@ How to use and understand the Student Performance Dashboard (Milestone 3) along 
 
 - **App:** `src/dash/app.py`
 - **Framework:** Streamlit
-- **Data sources:** DuckDB (`warehouse/student_performance.duckdb`) + Parquet files for fallbacks
-- **Access URL:** http://localhost:8501
+- **Data sources:** DuckDB + Parquet files
+- **Cloud URL:** https://depi-data-project-sxczyh8wks5x4bdwjznwgw.streamlit.app/
+- **Local URL:** http://localhost:8501
 
 Launch command:
 
@@ -22,9 +23,10 @@ python -m streamlit run src/dash/app.py
 ## 2. Core Features
 
 - **Overview KPIs:** Average score, attendance rate, cohort summaries
-- **Interactive filters:** University type, subject, semester, date range
-- **Visualizations:** Attendance heatmaps, trend lines, score distributions
-- **Export buttons:** Download filtered CSV snapshots
+- **Interactive filters:** Major, subject, year
+- **Visualizations:** Attendance heatmaps, score distributions, performance charts
+- **Student Profile:** Search by student number (1-10,000 on cloud, 1-1,000,000 locally)
+- **Export buttons:** Download at-risk student data as CSV
 - **Responsive layout:** Designed for desktop/laptop screens
 
 ---
