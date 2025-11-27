@@ -88,40 +88,34 @@ def get_connection():
         
         # Generate star schema if files are missing or need regeneration
         if missing_files or needs_regeneration:
-            st.info("⚠️ Optimized data files not found. Generating from source data...")
-            
             # Determine which data file to use based on what's available
             sample_50k = base_dir / 'data' / 'sample_50K_students.parquet'
             full_data = base_dir / 'data' / 'cleaned_students.parquet'
             
             if sample_50k.exists():
                 data_path = sample_50k
-                st.info("📊 Using 10K sample for cloud deployment...")
             elif full_data.exists():
                 data_path = full_data
-                st.info("📊 Using full dataset...")
             else:
                 # Try to stitch from parts (local development)
                 part1 = full_data.parent / f"{full_data.name}.part1"
                 if part1.exists():
-                    st.info("🧵 Stitching data parts...")
                     data_path = full_data
                 else:
                     st.error("❌ No data source found! Please ensure data files are present.")
                     return None
             
-            # Run the conversion script
+            # Run the conversion script (with loading spinner)
             try:
-                st.info(f"📊 Processing data from {data_path.name}...")
-                build_script_path = base_dir / "src" / "etl" / "convert_to_parquet.py"
-                if not build_script_path.exists():
-                    st.error(f"Conversion script not found at {build_script_path}.")
-                    return None
-                
-                subprocess.run([sys.executable, str(build_script_path)], check=True)
-                st.success("✅ Data optimized successfully!")
+                with st.spinner('Loading dashboard data...'):
+                    build_script_path = base_dir / "src" / "etl" / "convert_to_parquet.py"
+                    if not build_script_path.exists():
+                        st.error(f"Conversion script not found.")
+                        return None
+                    
+                    subprocess.run([sys.executable, str(build_script_path)], check=True, capture_output=True)
             except Exception as e:
-                st.error(f"❌ Error generating data: {e}")
+                st.error(f"❌ Error loading data: {str(e)}")
                 return None
         
         # Load Parquet files as Views
@@ -319,7 +313,7 @@ if conn:
         """
         risk_count = conn.execute(risk_count_query, params).fetchone()[0]
         
-        st.metric("⚠️ At-Risk Records", f"{risk_count:,}", delta="Requires Attention", delta_color="inverse")
+        st.metric("⚠️ At-Risk Records", f"{risk_count:,}")
         
         risk_scatter_query = f"""
             SELECT f.score, CAST(f.attendance_flag AS INTEGER) as attendance
