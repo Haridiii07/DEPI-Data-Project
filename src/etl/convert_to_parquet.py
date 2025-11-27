@@ -4,16 +4,17 @@ from pathlib import Path
 import sys
 
 def get_data_path(base_dir):
-    """Get the appropriate data path based on environment."""
-    # Check if running on Streamlit Cloud
-    is_cloud = os.getenv('STREAMLIT_SHARING_MODE') or os.getenv('STREAMLIT_RUNTIME_ENV')
+    """Get the appropriate data path based on what's available."""
+    # Check which data file exists (cloud has 50K sample, local has full data)
+    sample_50k = base_dir / 'data' / 'sample_50K_students.parquet'
+    full_data = base_dir / 'data' / 'cleaned_students.parquet'
     
-    if is_cloud:
-        # Use 50K sample on Streamlit Cloud (free tier memory limits)
-        return base_dir / 'data' / 'sample_50K_students.parquet'
+    if sample_50k.exists():
+        # Use 50K sample if available (Streamlit Cloud)
+        return sample_50k
     else:
         # Use full dataset locally
-        return base_dir / 'data' / 'cleaned_students.parquet'
+        return full_data
 
 def convert_to_parquet():
     """

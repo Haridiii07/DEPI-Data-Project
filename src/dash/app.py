@@ -73,28 +73,28 @@ def get_connection():
         if missing_files:
             st.info("⚠️ Optimized data files not found. Generating from source data...")
             
-            # Determine which data file to use
-            import os
-            is_cloud = os.getenv('STREAMLIT_SHARING_MODE') or os.getenv('STREAMLIT_RUNTIME_ENV')
+            # Determine which data file to use based on what's available
+            # Cloud deployments will have the 50K sample, local dev has full data
+            sample_50k = base_dir / 'data' / 'sample_50K_students.parquet'
+            full_data = base_dir / 'data' / 'cleaned_students.parquet'
             
-            if is_cloud:
-                # Use 50K sample on Streamlit Cloud (memory limits)
-                data_path = base_dir / 'data' / 'sample_50K_students.parquet'
+            if sample_50k.exists():
+                # Use 50K sample if available (Streamlit Cloud)
+                data_path = sample_50k
+                st.info("📊 Using 50K sample for cloud deployment...")
+            elif full_data.exists():
+                # Use full dataset if available (local)
+                data_path = full_data
+                st.info("📊 Using full dataset...")
             else:
-                # Use full dataset locally (with stitching if needed)
-                data_path = base_dir / 'data' / 'cleaned_students.parquet'
-                
-                # Check if we need to stitch parts for local development
-                if not data_path.exists():
-                    part1 = data_path.parent / f"{data_path.name}.part1"
-                    if part1.exists():
-                        st.info("🧵 Stitching data parts...")
-                        # The conversion script will handle stitching
-            
-            # Verify the data file exists
-            if not data_path.exists():
-                st.error(f"❌ Data file not found: {data_path.name}")
-                return None
+                # Try to stitch from parts (local development)
+                part1 = full_data.parent / f"{full_data.name}.part1"
+                if part1.exists():
+                    st.info("🧵 Stitching data parts...")
+                    data_path = full_data
+                else:
+                    st.error("❌ No data source found! Please ensure data files are present.")
+                    return None
             
             # Run the conversion script
             try:
