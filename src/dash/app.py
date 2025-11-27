@@ -118,7 +118,21 @@ def get_connection():
         conn.execute(f"CREATE VIEW dim_course AS SELECT * FROM '{parquet_dir / 'dim_course.parquet'}'")
         conn.execute(f"CREATE VIEW dim_date AS SELECT * FROM '{parquet_dir / 'dim_date.parquet'}'")
         
-        return conn
+        # Check if student_number column exists in dim_student
+        try:
+            test_query = "SELECT student_number FROM dim_student LIMIT 1"
+            conn.execute(test_query).fetchone()
+        except Exception:
+            # Column doesn't exist, need to regenerate the star schema
+            st.warning("🔄 Updating data schema... This will take a moment.")
+            import shutil
+            if parquet_dir.exists():
+                shutil.rmtree(parquet_dir)
+            # Re-trigger the missing files logic
+            missing_files = required_files
+        
+        if not missing_files:
+            return conn
         
     except Exception as e:
         st.error(f"❌ Error connecting to database: {e}")
