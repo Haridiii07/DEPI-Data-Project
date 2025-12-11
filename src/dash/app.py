@@ -323,16 +323,17 @@ if conn:
             """
             df_bar = conn.execute(bar_query, params).fetchdf()
             if not df_bar.empty:
-                fig_bar = px.bar(df_bar, x='major', y='avg_score', 
+                fig_bar = px.bar(df_bar, x='major', y='avg_score', color='major',
                                title="Top Majors by Average Score",
-                               color_discrete_sequence=['#2563eb'])
+                               color_discrete_sequence=px.colors.qualitative.Prism)
                 fig_bar.update_layout(
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     font={'family': "Inter, sans-serif", 'color': "#475569"},
                     xaxis_title=None,
                     yaxis_title="Average Score",
-                    margin=dict(l=20, r=20, t=40, b=20)
+                    margin=dict(l=20, r=20, t=40, b=20),
+                    showlegend=False
                 )
                 fig_bar.update_yaxes(gridcolor="#e2e8f0")
                 st.plotly_chart(fig_bar, use_container_width=True)
@@ -358,7 +359,8 @@ if conn:
             fig_sub = px.bar(df_subject, x='avg_score', y='subject', orientation='h',
                            title="Top 10 Subjects by Average Score",
                            text_auto='.1f',
-                           color_discrete_sequence=['#2563eb'])
+                           color='avg_score', 
+                           color_continuous_scale='Viridis')
             fig_sub.update_layout(
                 plot_bgcolor="rgba(0,0,0,0)",
                 paper_bgcolor="rgba(0,0,0,0)",
@@ -395,7 +397,7 @@ if conn:
                 labels=dict(x="Subject", y="Major", color="Rate"),
                 x=pivot_df.columns,
                 y=pivot_df.index,
-                color_continuous_scale="Blues",
+                color_continuous_scale="RdBu",
                 aspect="auto"
             )
             fig_heat.update_layout(
