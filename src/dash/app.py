@@ -18,33 +18,108 @@ st.set_page_config(
 # --- CUSTOM CSS FOR PREMIUM LOOK ---
 st.markdown("""
 <style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
+    :root {
+        --primary-color: #2563eb;
+        --secondary-color: #475569;
+        --background-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-dark: #1e293b;
+        --text-muted: #64748b;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+    }
+
     .stApp {
-        background-color: #f8f9fa;
+        background-color: var(--background-color);
         font-family: 'Inter', sans-serif;
     }
-    div[data-testid="stMetric"] {
-        background-color: #ffffff;
-        border: 1px solid #e0e0e0;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
+    
+    /* Headers */
     h1, h2, h3 {
-        color: #1e3a8a;
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-dark);
+        font-weight: 700;
     }
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 24px;
+    
+    h1 {
+        background: linear-gradient(120deg, #1e3a8a, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding-bottom: 20px;
     }
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        background-color: #ffffff;
-        border-radius: 4px;
-        color: #4b5563;
+
+    /* Cards / Metrics */
+    div[data-testid="stMetric"] {
+        background-color: var(--card-bg);
+        border: 1px solid #e2e8f0;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    div[data-testid="stMetric"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    div[data-testid="stMetricLabel"] {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+    
+    div[data-testid="stMetricValue"] {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.8rem;
+        color: var(--text-dark);
         font-weight: 600;
     }
+
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: transparent;
+        padding-bottom: 10px;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        height: 45px;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        color: var(--text-muted);
+        font-weight: 600;
+        padding: 0 20px;
+        transition: all 0.2s;
+    }
+
     .stTabs [aria-selected="true"] {
-        background-color: #e0e7ff;
-        color: #1e3a8a;
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+    }
+
+    /* DataFrame */
+    div[data-testid="stDataFrame"] {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        background-color: #ffffff;
+        border-right: 1px solid #e2e8f0;
+    }
+    
+    .css-1d391kg {
+        padding-top: 3rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -222,8 +297,14 @@ if conn:
             df_scores = conn.execute(hist_query, params).fetchdf()
             if not df_scores.empty:
                 fig_hist = px.histogram(df_scores, x="score", nbins=20, 
-                                      color_discrete_sequence=['#3b82f6'])
-                fig_hist.update_layout(plot_bgcolor="white")
+                                      color_discrete_sequence=['#2563eb'])
+                fig_hist.update_layout(
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    font={'family': "Inter, sans-serif", 'color': "#475569"},
+                    margin=dict(l=20, r=20, t=20, b=20)
+                )
+                fig_hist.update_yaxes(gridcolor="#e2e8f0")
                 st.plotly_chart(fig_hist, use_container_width=True)
             
         with c2:
@@ -242,10 +323,18 @@ if conn:
             """
             df_bar = conn.execute(bar_query, params).fetchdf()
             if not df_bar.empty:
-                fig_bar = px.bar(df_bar, x='major', y='avg_score', color='major',
+                fig_bar = px.bar(df_bar, x='major', y='avg_score', 
                                title="Top Majors by Average Score",
-                               color_discrete_sequence=px.colors.qualitative.Prism)
-                fig_bar.update_layout(plot_bgcolor="white", showlegend=False)
+                               color_discrete_sequence=['#2563eb'])
+                fig_bar.update_layout(
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    font={'family': "Inter, sans-serif", 'color': "#475569"},
+                    xaxis_title=None,
+                    yaxis_title="Average Score",
+                    margin=dict(l=20, r=20, t=40, b=20)
+                )
+                fig_bar.update_yaxes(gridcolor="#e2e8f0")
                 st.plotly_chart(fig_bar, use_container_width=True)
 
     with tab2:
@@ -268,8 +357,17 @@ if conn:
         if not df_subject.empty:
             fig_sub = px.bar(df_subject, x='avg_score', y='subject', orientation='h',
                            title="Top 10 Subjects by Average Score",
-                           color='avg_score', color_continuous_scale='Viridis')
-            fig_sub.update_layout(plot_bgcolor="white", yaxis={'categoryorder':'total ascending'})
+                           text_auto='.1f',
+                           color_discrete_sequence=['#2563eb'])
+            fig_sub.update_layout(
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
+                font={'family': "Inter, sans-serif", 'color': "#475569"},
+                xaxis_title="Average Score",
+                yaxis_title=None,
+                yaxis={'categoryorder':'total ascending'}
+            )
+            fig_sub.update_xaxes(gridcolor="#e2e8f0")
             st.plotly_chart(fig_sub, use_container_width=True)
         
         st.markdown("---")
@@ -294,11 +392,16 @@ if conn:
             pivot_df = df_heatmap.pivot(index='major', columns='subject', values='attendance_rate')
             fig_heat = px.imshow(
                 pivot_df,
-                labels=dict(x="Subject", y="Major", color="Attendance Rate"),
+                labels=dict(x="Subject", y="Major", color="Rate"),
                 x=pivot_df.columns,
                 y=pivot_df.index,
-                color_continuous_scale="RdBu",
+                color_continuous_scale="Blues",
                 aspect="auto"
+            )
+            fig_heat.update_layout(
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
+                font={'family': "Inter, sans-serif", 'color': "#475569"}
             )
             st.plotly_chart(fig_heat, use_container_width=True)
 
@@ -331,8 +434,18 @@ if conn:
         df_risk = conn.execute(risk_scatter_query, params).fetchdf()
         
         if not df_risk.empty:
-            fig_risk = px.scatter(df_risk, x='attendance', y='score', trendline="ols")
-            fig_risk.add_hrect(y0=0, y1=60, line_width=0, fillcolor="red", opacity=0.1)
+            fig_risk = px.scatter(df_risk, x='attendance', y='score', trendline="ols",
+                                      color_discrete_sequence=['#ef4444'])
+            fig_risk.add_hrect(y0=0, y1=60, line_width=0, fillcolor="#ef4444", opacity=0.1)
+            fig_risk.update_layout(
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
+                font={'family': "Inter, sans-serif", 'color': "#475569"},
+                xaxis_title="Attendance Flag (0/1)",
+                yaxis_title="Score"
+            )
+            fig_risk.update_xaxes(gridcolor="#e2e8f0")
+            fig_risk.update_yaxes(gridcolor="#e2e8f0")
             st.plotly_chart(fig_risk, use_container_width=True)
             
         st.subheader("📥 Download At-Risk List")
